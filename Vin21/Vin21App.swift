@@ -19,7 +19,7 @@ struct Vin21App: App {
     
     var body: some Scene {
         WindowGroup {
-            ContentView(model: Model())
+            ContentView(model: model)
         }
     }
 }
