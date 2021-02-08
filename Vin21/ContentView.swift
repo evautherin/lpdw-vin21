@@ -13,17 +13,32 @@ struct ContentView: View {
     
     var body: some View {
         VStack {
-            Text("Hello, world!")
-                .padding()
+            
+            if (model.user?.email == .none) {
+                Text("Hello, world!")
+                    .padding()
+            } else {
+                Text("Hello, \(model.user!.email!)")
+                    .padding()
+            }
+            
             
             Button("Authentification") {
-                Auth.auth().signIn(withEmail: "etienne@vautherin.com", password: "Vin21-2021") { authResult, error in
+                Auth.auth().signIn(
+                    withEmail: "etienne@vautherin.com",
+                    password: "Vin21-2021"
+                ) { (authResult, error) in
                     if let error = error {
                         print("Authentification error: \(error.localizedDescription)")
                     } else {
                         print("No authentification error")
                     }
-                  // ...
+                    
+                    model.user = authResult?.user
+                    
+//                    if let authResult = authResult {
+//                        model.user = authResult.user
+//                    }
                 }
             }
         }

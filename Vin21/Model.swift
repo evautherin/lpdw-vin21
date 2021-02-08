@@ -11,5 +11,5 @@ import Firebase
 
 
 class Model: ObservableObject {
-    var user: User?
+    @Published var user: User?
 }
