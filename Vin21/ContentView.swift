@@ -13,7 +13,12 @@ struct ContentView: View {
         Text("Hello, world!")
             .padding()
             .onAppear {
-                Auth.auth().signIn(withEmail: "email", password: "password") { authResult, error in
+                Auth.auth().signIn(withEmail: "etienne@vautherin.com", password: "Vin21-2021") { authResult, error in
+                    if let error = error {
+                        print("Authentification error: \(error.localizedDescription)")
+                    } else {
+                        print("No authentification error")
+                    }
                   // ...
                 }
             }
