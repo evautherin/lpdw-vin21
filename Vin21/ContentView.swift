@@ -12,9 +12,11 @@ struct ContentView: View {
     @ObservedObject var model: Model
     
     var body: some View {
-        Text("Hello, world!")
-            .padding()
-            .onAppear {
+        VStack {
+            Text("Hello, world!")
+                .padding()
+            
+            Button("Authentification") {
                 Auth.auth().signIn(withEmail: "etienne@vautherin.com", password: "Vin21-2021") { authResult, error in
                     if let error = error {
                         print("Authentification error: \(error.localizedDescription)")
@@ -24,6 +26,7 @@ struct ContentView: View {
                   // ...
                 }
             }
+        }
     }
 }
 

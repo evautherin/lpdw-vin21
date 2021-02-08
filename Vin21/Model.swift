@@ -7,8 +7,9 @@
 
 import Foundation
 import SwiftUI
+import Firebase
 
 
 class Model: ObservableObject {
-    
+    var user: User?
 }
