@@ -10,6 +10,7 @@ import Firebase
 
 @main
 struct Vin21App: App {
+    let model = Model()
     
     init() {
         FirebaseApp.configure()
@@ -18,7 +19,7 @@ struct Vin21App: App {
     
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            ContentView(model: Model())
         }
     }
 }
