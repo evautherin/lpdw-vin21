@@ -14,6 +14,9 @@ import Firebase
 class Model: ObservableObject {
     @Published var user: User?
     
+    // Model doit maintenir un ensemble de "plomberies" (robinet -> lavabo)
+    var subscriptions = Set<AnyCancellable>()
+    
     var connected: AnyPublisher<Bool, Never> {
         user.publisher
             .map { (user: User?) -> Bool in
@@ -21,5 +24,44 @@ class Model: ObservableObject {
             }
             .print("connected")
             .eraseToAnyPublisher()
+    }
+    
+    
+    func signInFuture(
+        withEmail email: String,
+        password: String
+    ) -> Future<AuthDataResult, Error> {
+        Future { promise in
+            Auth.auth().signIn(withEmail: email, password: password) { (authResult, error) in
+                if let error = error {
+                    promise(.failure(error))
+                }
+                
+                if let authResult = authResult {
+                    promise(.success(authResult))
+                }
+            }
+        }
+    }
+    
+    
+    func signIn(withEmail email: String, password: String) {
+        
+        // Robinet qui emet un AuthResult ou Error
+        signInFuture(withEmail: email, password: password)
+            
+            // Lavabo a 2 bacs pour récupérer ce qui sort du robinet
+            .sink { (completion) in // Bac des erreurs
+                switch (completion) {
+                case .finished: break
+                case .failure(let error): print("Error: \(error.localizedDescription)")
+                }
+            } receiveValue: { (authResult) in // Bac des authResult
+                self.user = authResult.user
+            }
+            
+            // Maintenir cette "plomberie" dans subscriptions
+            .store(in: &subscriptions)
+
     }
 }
