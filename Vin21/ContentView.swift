@@ -25,6 +25,14 @@ struct ContentView: View {
                     .padding()
             }
             
+            Button("Sign Out") {
+                do {
+                    try Auth.auth().signOut()
+                    model.user = .none
+                } catch {
+                    print("Sign Out Error: \(error.localizedDescription)")
+                }
+            }
             
         }
         
@@ -36,9 +44,9 @@ struct ContentView: View {
         }
         
         // La vue LoginView est affichée par dessus VStack lorsque isShowingLogin est vrai
-        .sheet(isPresented: $isShowingLogin, content: {
+        .sheet(isPresented: $isShowingLogin) {
             LoginView(model: model)
-        })
+        }
     }
 }
 
