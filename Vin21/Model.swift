@@ -27,7 +27,9 @@ class Model: ObservableObject {
     }
     
     
-    func signInFuture(
+    // Cette fonction n'est pas accessible à l'éxtérieur de ce fichier source
+    // Cette fonction n'a pas besoin de s'appliquer sur une instance de Model on la déclare donc comme une fonction de classe.
+    private class func signInFuture(
         withEmail email: String,
         password: String
     ) -> Future<AuthDataResult, Error> {
@@ -48,7 +50,7 @@ class Model: ObservableObject {
     func signIn(withEmail email: String, password: String) {
         
         // Robinet qui emet un AuthResult ou Error
-        signInFuture(withEmail: email, password: password)
+        Model.signInFuture(withEmail: email, password: password)
             
             // Lavabo a 2 bacs pour récupérer ce qui sort du robinet
             .sink { (completion) in // Bac des erreurs
