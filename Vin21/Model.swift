@@ -27,18 +27,25 @@ class Model: ObservableObject {
     }
     
     
-    // Cette fonction n'est pas accessible à l'éxtérieur de ce fichier source
+    // Cette fonction n'est pas accessible à l'extérieur de ce fichier source
     // Cette fonction n'a pas besoin de s'appliquer sur une instance de Model on la déclare donc comme une fonction de classe.
     private class func signInFuture(
         withEmail email: String,
         password: String
     ) -> Future<AuthDataResult, Error> {
+        
+        // Cette fonction retourne un Future de type AuthDataResult ou Error
         Future { promise in
+            
+            // Le AuthDataResult ou l'Error sont obtenus par l'appel Firebase
             Auth.auth().signIn(withEmail: email, password: password) { (authResult, error) in
+                
+                // signIn signale une erreur, on la remonte au travers de la promesse
                 if let error = error {
                     promise(.failure(error))
                 }
                 
+                // signIn donne un résultat, on le remonte au travers de la promesse
                 if let authResult = authResult {
                     promise(.success(authResult))
                 }
@@ -49,7 +56,7 @@ class Model: ObservableObject {
     
     func signIn(withEmail email: String, password: String) {
         
-        // Robinet qui emet un AuthResult ou Error
+        // Future = robinet qui emet un seul AuthResult ou Error
         Model.signInFuture(withEmail: email, password: password)
             
             // Lavabo a 2 bacs pour récupérer ce qui sort du robinet
