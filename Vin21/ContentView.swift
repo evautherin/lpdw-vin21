@@ -11,6 +11,9 @@ import Firebase
 struct ContentView: View {
     @ObservedObject var model: Model
     
+    // Etat définissant l'affichage de la vue de login
+    @State var isShowingLogin = true
+    
     var body: some View {
         VStack {
             
@@ -23,25 +26,19 @@ struct ContentView: View {
             }
             
             
-            Button("Authentification") {
-                Auth.auth().signIn(
-                    withEmail: "etienne@vautherin.com",
-                    password: "Vin21-2021"
-                ) { (authResult, error) in
-                    if let error = error {
-                        print("Authentification error: \(error.localizedDescription)")
-                    } else {
-                        print("No authentification error")
-                    }
-                    
-                    model.user = authResult?.user
-                    
-//                    if let authResult = authResult {
-//                        model.user = authResult.user
-//                    }
-                }
-            }
         }
+        
+        // Observation de la valeur de model.user
+        // Si user est défini, isShowingLogin prend la valeur false
+        // Si user n'est pas défini, isShowingLogin prend la valeur true
+        .onChange(of: model.user) { (user) in
+            isShowingLogin = (user == .none)
+        }
+        
+        // La vue LoginView est affichée par dessus VStack lorsque isShowingLogin est vrai
+        .sheet(isPresented: $isShowingLogin, content: {
+            LoginView(model: model)
+        })
     }
 }
 
