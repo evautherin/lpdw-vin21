@@ -26,12 +26,15 @@ struct ContentView: View {
             }
             
             Button("Sign Out") {
-                do {
-                    try Auth.auth().signOut()
-                    model.user = .none
-                } catch {
-                    print("Sign Out Error: \(error.localizedDescription)")
-                }
+                model.signOut()
+                
+                // Sign Out sans Future
+//                do {
+//                    try Auth.auth().signOut()
+//                    model.user = .none
+//                } catch {
+//                    print("Sign Out Error: \(error.localizedDescription)")
+//                }
             }
             
         }

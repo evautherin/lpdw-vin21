@@ -73,4 +73,45 @@ class Model: ObservableObject {
             .store(in: &subscriptions)
 
     }
+    
+    
+    // Cette fonction n'est pas accessible à l'extérieur de ce fichier source
+    // Cette fonction n'a pas besoin de s'appliquer sur une instance de Model on la déclare donc comme une fonction de classe.
+    private class func signOutFuture() -> Future<(), Error> {
+        
+        // Cette fonction retourne un Future de type () ou Error
+        Future { promise in
+            
+            // Le () ou l'Error sont obtenus par l'appel Firebase
+            do {
+                try Auth.auth().signOut()
+                // SignOut réussi
+                promise(.success(()))
+            } catch {
+                // Récupération d'une exception lors du sign out
+                promise(.failure(error))
+            }
+        }
+    }
+    
+    
+    func signOut() {
+        
+        // Future = robinet qui emet un seul () ou Error
+        Model.signOutFuture()
+            
+            // Lavabo a 2 bacs pour récupérer ce qui sort du robinet
+            .sink { (completion) in // Bac des erreurs
+                switch (completion) {
+                case .finished: break
+                case .failure(let error): print("Error: \(error.localizedDescription)")
+                }
+            } receiveValue: { _ in // Bac des ()
+                self.user = .none
+            }
+            
+            // Maintenir cette "plomberie" dans subscriptions
+            .store(in: &subscriptions)
+
+    }
 }
