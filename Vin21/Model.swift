@@ -72,6 +72,7 @@ class Model: ObservableObject {
                 }
             } receiveValue: { (authResult) in // Bac des authResult
                 self.user = authResult.user
+                self.getWines()
             }
             
             // Maintenir cette "plomberie" dans subscriptions
@@ -146,4 +147,44 @@ class Model: ObservableObject {
             }
           }
     }
+    
+    
+    var wineCollectionPublisher: AnyPublisher<CollectionReference, Never> {
+        $user
+            .compactMap { $0 }
+            .compactMap(\.email)
+            .map { Firestore.firestore().collection($0) }
+            .eraseToAnyPublisher()
+    }
+    
+    
+    func winesPublisher(
+        collection: CollectionReference
+    ) -> AnyPublisher<[Wine], Error> {
+        let winesSubject = PassthroughSubject<[Wine], Error>()
+
+        let listener = collection.addSnapshotListener { (querySnapshot, error) in
+            if let error = error {
+                winesSubject.send(completion: .failure(error))
+            }
+            
+            guard let documents = querySnapshot?.documents else {
+              print("No documents")
+              return
+            }
+              
+            let wines = documents.compactMap { queryDocumentSnapshot -> Wine? in
+              return try? queryDocumentSnapshot.data(as: Wine.self)
+            }
+            winesSubject.send(wines)
+          }
+        
+        return winesSubject
+            .handleEvents(receiveCancel: { listener.remove(); print("listener removed") })
+            .print("winesSubject")
+            .eraseToAnyPublisher()
+    }
+    
+    
+
 }

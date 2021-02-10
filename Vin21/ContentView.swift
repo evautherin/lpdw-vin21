@@ -28,6 +28,10 @@ struct ContentView: View {
             Button("Add Wine") {
                 model.add(wine: Wine())
             }.padding()
+            
+            List(model.wines) { wine in
+                WineView(wine: wine)
+            }
 
             Button("Sign Out") {
                 model.signOut()

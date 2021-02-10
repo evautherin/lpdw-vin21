@@ -18,6 +18,7 @@
 		8FA27B1525D3D58F00B3A91C /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 8FA27B1425D3D58F00B3A91C /* FirebaseFirestore */; };
 		8FA27B1725D3D58F00B3A91C /* FirebaseFirestoreSwift-Beta in Frameworks */ = {isa = PBXBuildFile; productRef = 8FA27B1625D3D58F00B3A91C /* FirebaseFirestoreSwift-Beta */; };
 		8FA27B1A25D3DFA600B3A91C /* Wine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FA27B1925D3DFA600B3A91C /* Wine.swift */; };
+		8FA27B1E25D40F1600B3A91C /* WineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FA27B1D25D40F1600B3A91C /* WineView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -31,6 +32,7 @@
 		8F8580E925D139A300722FDE /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		8F8580EB25D139A300722FDE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8FA27B1925D3DFA600B3A91C /* Wine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Wine.swift; sourceTree = "<group>"; };
+		8FA27B1D25D40F1600B3A91C /* WineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WineView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -69,6 +71,7 @@
 				8F8580E225D1399E00722FDE /* Vin21App.swift */,
 				8F8580E425D1399E00722FDE /* ContentView.swift */,
 				8F6774AE25D17F5300D43BF6 /* LoginView.swift */,
+				8FA27B1D25D40F1600B3A91C /* WineView.swift */,
 				8F6774AB25D16F7500D43BF6 /* Model.swift */,
 				8FA27B1925D3DFA600B3A91C /* Wine.swift */,
 				8F8580E625D139A300722FDE /* Assets.xcassets */,
@@ -166,6 +169,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8F6774AC25D16F7500D43BF6 /* Model.swift in Sources */,
+				8FA27B1E25D40F1600B3A91C /* WineView.swift in Sources */,
 				8FA27B1A25D3DFA600B3A91C /* Wine.swift in Sources */,
 				8F8580E525D1399E00722FDE /* ContentView.swift in Sources */,
 				8F6774AF25D17F5300D43BF6 /* LoginView.swift in Sources */,
