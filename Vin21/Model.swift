@@ -13,6 +13,7 @@ import Firebase
 
 class Model: ObservableObject {
     @Published var user: User?
+    @Published var wines = [Wine]()
     
     // Model doit maintenir un ensemble de "plomberies" (robinet -> lavabo)
     var subscriptions = Set<AnyCancellable>()
@@ -119,11 +120,30 @@ class Model: ObservableObject {
 
     }
     
+    
     func add(wine: Wine) {
+        guard let wineCollection = wineCollection else { return }
+        
         do {
-            _ = try wineCollection?.addDocument(from: wine)
+            _ = try wineCollection.addDocument(from: wine)
         } catch {
             print("Add wine error: \(error.localizedDescription)")
         }
+    }
+    
+    
+    func getWines() {
+        guard let wineCollection = wineCollection else { return }
+
+        wineCollection.addSnapshotListener { (querySnapshot, error) in
+            guard let documents = querySnapshot?.documents else {
+              print("No documents")
+              return
+            }
+              
+            self.wines = documents.compactMap { queryDocumentSnapshot -> Wine? in
+              return try? queryDocumentSnapshot.data(as: Wine.self)
+            }
+          }
     }
 }
