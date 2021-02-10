@@ -24,8 +24,10 @@ class Model: ObservableObject {
     }
     
     
-    var wineCollection: CollectionReference {
-        Firestore.firestore().collection("")
+    var wineCollection: CollectionReference? {
+        guard let email = user?.email else { return .none}
+        
+        return Firestore.firestore().collection(email)
     }
     
     
@@ -118,6 +120,10 @@ class Model: ObservableObject {
     }
     
     func add(wine: Wine) {
-        
+        do {
+            _ = try wineCollection?.addDocument(from: wine)
+        } catch {
+            print("Add wine error: \(error.localizedDescription)")
+        }
     }
 }

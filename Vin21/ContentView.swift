@@ -25,6 +25,10 @@ struct ContentView: View {
                     .padding()
             }
             
+            Button("Add Wine") {
+                model.add(wine: Wine())
+            }.padding()
+
             Button("Sign Out") {
                 model.signOut()
                 
@@ -35,7 +39,7 @@ struct ContentView: View {
 //                } catch {
 //                    print("Sign Out Error: \(error.localizedDescription)")
 //                }
-            }
+            }.padding()
             
         }
         

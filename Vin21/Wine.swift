@@ -12,5 +12,5 @@ import FirebaseFirestoreSwift
 
 struct Wine: Identifiable, Codable {
     @DocumentID var id: String?
-    
+    var title = "Test"
 }
