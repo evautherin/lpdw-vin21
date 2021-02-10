@@ -36,7 +36,7 @@ struct Vin21App: App {
     
     var body: some Scene {
         WindowGroup {
-            ContentView(model: model)
+            ContentView(model: model, isShowingLogin: model.noSignedUser)
         }
     }
 }

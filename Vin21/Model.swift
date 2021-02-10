@@ -17,13 +17,15 @@ class Model: ObservableObject {
     // Model doit maintenir un ensemble de "plomberies" (robinet -> lavabo)
     var subscriptions = Set<AnyCancellable>()
     
-    var connected: AnyPublisher<Bool, Never> {
-        user.publisher
-            .map { (user: User?) -> Bool in
-                user != .none
-            }
-            .print("connected")
-            .eraseToAnyPublisher()
+    // Si user n'est pas défini, noSignedUser prend la valeur true
+    // Si user est défini, noSignedUser prend la valeur false
+    var noSignedUser: Bool {
+        user == .none
+    }
+    
+    
+    var wineCollection: CollectionReference {
+        Firestore.firestore().collection("")
     }
     
     
@@ -113,5 +115,9 @@ class Model: ObservableObject {
             // Maintenir cette "plomberie" dans subscriptions
             .store(in: &subscriptions)
 
+    }
+    
+    func add(wine: Wine) {
+        
     }
 }

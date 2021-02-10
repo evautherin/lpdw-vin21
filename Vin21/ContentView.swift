@@ -12,7 +12,7 @@ struct ContentView: View {
     @ObservedObject var model: Model
     
     // Etat définissant l'affichage de la vue de login
-    @State var isShowingLogin = true
+    @State var isShowingLogin: Bool
     
     var body: some View {
         VStack {
@@ -43,7 +43,7 @@ struct ContentView: View {
         // Si user est défini, isShowingLogin prend la valeur false
         // Si user n'est pas défini, isShowingLogin prend la valeur true
         .onChange(of: model.user) { (user) in
-            isShowingLogin = (user == .none)
+            isShowingLogin = model.noSignedUser
         }
         
         // La vue LoginView est affichée par dessus VStack lorsque isShowingLogin est vrai
@@ -55,6 +55,7 @@ struct ContentView: View {
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView(model: Model())
+        let model = Model()
+        return ContentView(model: model, isShowingLogin: model.noSignedUser)
     }
 }
