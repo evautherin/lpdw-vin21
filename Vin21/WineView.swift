@@ -16,6 +16,7 @@ struct WineView: View {
     var body: some View {
         HStack {
             Text(wine.title)
+            Spacer()
             Button("Delete") {
                 guard let wineId = wine.id else { return }
                 model.deleteWine(id: wineId)
