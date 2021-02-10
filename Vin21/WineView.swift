@@ -17,10 +17,10 @@ struct WineView: View {
         HStack {
             Text(wine.title)
             Spacer()
-            Button("Delete") {
-                guard let wineId = wine.id else { return }
-                model.deleteWine(id: wineId)
-            }
+//            Button("Delete") {
+//                guard let wineId = wine.id else { return }
+//                model.deleteWine(id: wineId)
+//            }
         }
     }
 }

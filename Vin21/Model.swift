@@ -18,6 +18,22 @@ class Model: ObservableObject {
     // Model doit maintenir un ensemble de "plomberies" (robinet -> lavabo)
     var subscriptions = Set<AnyCancellable>()
     
+    init() {
+        wineCollectionPublisher
+            .map(winesPublisher)
+            .switchToLatest()
+            .sink { (completion) in
+                switch (completion) {
+                case .finished: break
+                case .failure(let error): print("Error: \(error.localizedDescription)")
+                }
+            } receiveValue: { (wines) in
+                self.wines = wines
+            }
+            .store(in: &subscriptions)
+    }
+    
+    
     // Si user n'est pas défini, noSignedUser prend la valeur true
     // Si user est défini, noSignedUser prend la valeur false
     var noSignedUser: Bool {
@@ -72,7 +88,7 @@ class Model: ObservableObject {
                 }
             } receiveValue: { (authResult) in // Bac des authResult
                 self.user = authResult.user
-                self.getWines()
+//                self.getWines()
             }
             
             // Maintenir cette "plomberie" dans subscriptions
@@ -140,24 +156,24 @@ class Model: ObservableObject {
     }
     
     
-    func getWines() {
-        guard let wineCollection = wineCollection else { return }
-
-        wineCollection.addSnapshotListener { (querySnapshot, error) in
-            guard let documents = querySnapshot?.documents else {
-              print("No documents")
-              return
-            }
-              
-            self.wines = documents
-                .compactMap { queryDocumentSnapshot -> Wine? in
-                    return try? queryDocumentSnapshot.data(as: Wine.self)
-                }
-                .sorted { (wine0, wine1) -> Bool in
-                    wine0.title < wine1.title
-                }
-          }
-    }
+//    func getWines() {
+//        guard let wineCollection = wineCollection else { return }
+//
+//        wineCollection.addSnapshotListener { (querySnapshot, error) in
+//            guard let documents = querySnapshot?.documents else {
+//              print("No documents")
+//              return
+//            }
+//
+//            self.wines = documents
+//                .compactMap { queryDocumentSnapshot -> Wine? in
+//                    return try? queryDocumentSnapshot.data(as: Wine.self)
+//                }
+//                .sorted { (wine0, wine1) -> Bool in
+//                    wine0.title < wine1.title
+//                }
+//          }
+//    }
     
     
     var wineCollectionPublisher: AnyPublisher<CollectionReference, Never> {
@@ -165,6 +181,7 @@ class Model: ObservableObject {
             .compactMap { $0 }
             .compactMap(\.email)
             .map { Firestore.firestore().collection($0) }
+            .print("wineCollection")
             .eraseToAnyPublisher()
     }
     
@@ -196,6 +213,4 @@ class Model: ObservableObject {
             .eraseToAnyPublisher()
     }
     
-    
-
 }
