@@ -133,6 +133,13 @@ class Model: ObservableObject {
     }
     
     
+    func deleteWine(id: String) {
+        guard let wineCollection = wineCollection else { return }
+
+        wineCollection.document(id).delete()
+    }
+    
+    
     func getWines() {
         guard let wineCollection = wineCollection else { return }
 

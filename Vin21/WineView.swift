@@ -10,9 +10,16 @@ import SwiftUI
 
 
 struct WineView: View {
+    let model: Model
     let wine: Wine
     
     var body: some View {
-        Text(wine.title)
+        HStack {
+            Text(wine.title)
+            Button("Delete") {
+                guard let wineId = wine.id else { return }
+                model.deleteWine(id: wineId)
+            }
+        }
     }
 }

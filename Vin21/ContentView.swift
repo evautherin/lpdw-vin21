@@ -30,7 +30,7 @@ struct ContentView: View {
             }.padding()
             
             List(model.wines) { wine in
-                WineView(wine: wine)
+                WineView(model: model, wine: wine)
             }
 
             Button("Sign Out") {
