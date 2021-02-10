@@ -142,9 +142,13 @@ class Model: ObservableObject {
               return
             }
               
-            self.wines = documents.compactMap { queryDocumentSnapshot -> Wine? in
-              return try? queryDocumentSnapshot.data(as: Wine.self)
-            }
+            self.wines = documents
+                .compactMap { queryDocumentSnapshot -> Wine? in
+                    return try? queryDocumentSnapshot.data(as: Wine.self)
+                }
+                .sorted { (wine0, wine1) -> Bool in
+                    wine0.title < wine1.title
+                }
           }
     }
     
