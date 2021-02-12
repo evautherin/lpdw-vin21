@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Firebase
 
 struct Shelf: Codable {
     
@@ -13,7 +14,7 @@ struct Shelf: Codable {
 
 
 private extension Shelf {
-    var a: [Wine] {
-        []
+    var a: CollectionReference? {
+        .none
     }
 }

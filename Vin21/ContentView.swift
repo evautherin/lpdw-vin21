@@ -58,6 +58,7 @@ struct ContentView: View {
         .sheet(isPresented: $isShowingLogin) {
             LoginView(model: model)
         }
+        
     }
 }
 
