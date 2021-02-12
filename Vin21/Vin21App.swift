@@ -10,34 +10,26 @@ import Firebase
 
 @main
 struct Vin21App: App {
-    let model = Model()
-    
-    init() {
-        FirebaseApp.configure()
-        model.listenFirebase()
-    }
-    
-    func testException() {
-        let fm = FileManager.default
-        do {
-            try fm.createDirectory(atPath: "", withIntermediateDirectories: true, attributes: .none)
-            try fm.removeItem(atPath: "")
-        } catch {
-            print(error.localizedDescription)
-        }
-    }
+    @UIApplicationDelegateAdaptor(Delegate.self) var delegate
 
-    
-    func test2Exception() throws {
-        let fm = FileManager.default
-        try fm.createDirectory(atPath: "", withIntermediateDirectories: true, attributes: .none)
-        try fm.removeItem(atPath: "")
-    }
-
-    
     var body: some Scene {
         WindowGroup {
-            ContentView(model: model, isShowingLogin: model.noSignedUser)
+            let model = delegate.model
+            ContentView(model: model, isShowingLogin: false)
         }
+    }
+}
+
+
+class Delegate : NSObject, UIApplicationDelegate {
+    let model = Model()
+
+    func application(
+        _ application: UIApplication,
+        didFinishLaunchingWithOptions _: [UIApplication.LaunchOptionsKey : Any]? = nil
+    ) -> Bool {
+        FirebaseApp.configure()
+        model.listenFirebase()
+        return true
     }
 }
