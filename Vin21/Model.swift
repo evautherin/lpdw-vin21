@@ -13,25 +13,34 @@ import Firebase
 
 class Model: ObservableObject {
     @Published var user: User?
+    @Published var collection: CollectionReference?
     @Published var wines = [Wine]()
     
     // Model doit maintenir un ensemble de "plomberies" (robinet -> lavabo)
     var subscriptions = Set<AnyCancellable>()
     
-    init() {
-        wineCollectionPublisher
-            .map(winesPublisher)
+    
+    func listenFirebase() {
+        Auth.auth().userPublisher
+            .assign(to: \.user, on: self)
+            .store(in: &subscriptions)
+
+        $user
+            .compactMap { $0 }
+            .map { Firestore.firestore().collection($0.uid) }
+            .assign(to: \.collection, on: self)
+            .store(in: &subscriptions)
+
+        $collection
+            .compactMap { $0 }
+            .map { $0.items(ofType: Wine.self) }
             .switchToLatest()
-            .sink { (completion) in
-                switch (completion) {
-                case .finished: break
-                case .failure(let error): print("Error: \(error.localizedDescription)")
-                }
-            } receiveValue: { (wines) in
-                self.wines = wines
-            }
+            .handleEvents(receiveCompletion: handleCompletionError)
+            .replaceError(with: [])
+            .assign(to: \.wines, on: self)
             .store(in: &subscriptions)
     }
+    
     
     
     // Si user n'est pas défini, noSignedUser prend la valeur true
@@ -41,10 +50,11 @@ class Model: ObservableObject {
     }
     
     
-    var wineCollection: CollectionReference? {
-        guard let email = user?.email else { return .none}
-        
-        return Firestore.firestore().collection(email)
+    func handleCompletionError(completion: Subscribers.Completion<Error>) {
+        switch (completion) {
+        case .finished: break
+        case .failure(let error): print("Error: \(error.localizedDescription)")
+        }
     }
     
     
@@ -54,9 +64,9 @@ class Model: ObservableObject {
         withEmail email: String,
         password: String
     ) -> Future<AuthDataResult, Error> {
-        
         // Cette fonction retourne un Future de type AuthDataResult ou Error
         Future { promise in
+            
             
             // Le AuthDataResult ou l'Error sont obtenus par l'appel Firebase
             Auth.auth().signIn(withEmail: email, password: password) { (authResult, error) in
@@ -87,7 +97,7 @@ class Model: ObservableObject {
                 case .failure(let error): print("Error: \(error.localizedDescription)")
                 }
             } receiveValue: { (authResult) in // Bac des authResult
-                self.user = authResult.user
+//                self.user = authResult.user
 //                self.getWines()
             }
             
@@ -139,7 +149,7 @@ class Model: ObservableObject {
     
     
     func add(wine: Wine) {
-        guard let wineCollection = wineCollection else { return }
+        guard let wineCollection = collection else { return }
         
         do {
             _ = try wineCollection.addDocument(from: wine)
@@ -150,7 +160,7 @@ class Model: ObservableObject {
     
     
     func deleteWine(id: String) {
-        guard let wineCollection = wineCollection else { return }
+        guard let wineCollection = collection else { return }
 
         wineCollection.document(id).delete()
     }
@@ -175,41 +185,29 @@ class Model: ObservableObject {
 //          }
 //    }
     
-    
-    var wineCollectionPublisher: AnyPublisher<CollectionReference, Never> {
-        $user
-            .compactMap { $0 }
-            .compactMap(\.email)
-            .map { Firestore.firestore().collection($0) }
-            .print("wineCollection")
-            .eraseToAnyPublisher()
-    }
-    
-    
-    func winesPublisher(
-        collection: CollectionReference
+    // Robinet qui émet un nouveau [Wine] pour chaque changement dans les documents de collection
+    func winesFromCollection(
+        _ collection: CollectionReference
     ) -> AnyPublisher<[Wine], Error> {
+        
         let winesSubject = PassthroughSubject<[Wine], Error>()
 
-        let listener = collection.addSnapshotListener { (querySnapshot, error) in
+        let registration = collection.addSnapshotListener { (querySnapshot, error) in
             if let error = error {
                 winesSubject.send(completion: .failure(error))
+                return
             }
             
-            guard let documents = querySnapshot?.documents else {
-              print("No documents")
-              return
-            }
+            guard let documents = querySnapshot?.documents else { return }
               
             let wines = documents.compactMap { queryDocumentSnapshot -> Wine? in
-              return try? queryDocumentSnapshot.data(as: Wine.self)
+                try? queryDocumentSnapshot.data(as: Wine.self)
             }
             winesSubject.send(wines)
           }
         
         return winesSubject
-            .handleEvents(receiveCancel: { listener.remove(); print("listener removed") })
-            .print("winesSubject")
+            .handleEvents(receiveCancel: { registration.remove() })
             .eraseToAnyPublisher()
     }
     

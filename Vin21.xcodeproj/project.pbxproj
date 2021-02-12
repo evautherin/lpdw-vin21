@@ -19,6 +19,7 @@
 		8FA27B1725D3D58F00B3A91C /* FirebaseFirestoreSwift-Beta in Frameworks */ = {isa = PBXBuildFile; productRef = 8FA27B1625D3D58F00B3A91C /* FirebaseFirestoreSwift-Beta */; };
 		8FA27B1A25D3DFA600B3A91C /* Wine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FA27B1925D3DFA600B3A91C /* Wine.swift */; };
 		8FA27B1E25D40F1600B3A91C /* WineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FA27B1D25D40F1600B3A91C /* WineView.swift */; };
+		8FD538C925D542DF00A298B4 /* FirebasePublishers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FD538C825D542DF00A298B4 /* FirebasePublishers.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -33,6 +34,7 @@
 		8F8580EB25D139A300722FDE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8FA27B1925D3DFA600B3A91C /* Wine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Wine.swift; sourceTree = "<group>"; };
 		8FA27B1D25D40F1600B3A91C /* WineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WineView.swift; sourceTree = "<group>"; };
+		8FD538C825D542DF00A298B4 /* FirebasePublishers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebasePublishers.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -74,6 +76,7 @@
 				8FA27B1D25D40F1600B3A91C /* WineView.swift */,
 				8F6774AB25D16F7500D43BF6 /* Model.swift */,
 				8FA27B1925D3DFA600B3A91C /* Wine.swift */,
+				8FD538C825D542DF00A298B4 /* FirebasePublishers.swift */,
 				8F8580E625D139A300722FDE /* Assets.xcassets */,
 				8F8580EB25D139A300722FDE /* Info.plist */,
 				8F6774A725D1532900D43BF6 /* GoogleService-Info.plist */,
@@ -169,6 +172,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8F6774AC25D16F7500D43BF6 /* Model.swift in Sources */,
+				8FD538C925D542DF00A298B4 /* FirebasePublishers.swift in Sources */,
 				8FA27B1E25D40F1600B3A91C /* WineView.swift in Sources */,
 				8FA27B1A25D3DFA600B3A91C /* Wine.swift in Sources */,
 				8F8580E525D1399E00722FDE /* ContentView.swift in Sources */,

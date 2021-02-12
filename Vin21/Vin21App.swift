@@ -14,6 +14,7 @@ struct Vin21App: App {
     
     init() {
         FirebaseApp.configure()
+        model.listenFirebase()
     }
     
     func testException() {
