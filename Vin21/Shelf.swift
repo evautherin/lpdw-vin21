@@ -13,7 +13,7 @@ struct Shelf: Codable {
 
 
 private extension Shelf {
-    var a: Int {
-        2
+    var a: [Wine] {
+        []
     }
 }
