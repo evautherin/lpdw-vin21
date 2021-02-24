@@ -11,7 +11,7 @@ import Firebase
 
 
 struct LoginView: View {
-    @ObservedObject var model: Model
+    @EnvironmentObject var model: Model
     
     // Ces 2 états sont en quelque sorte le ViewModel de LoginView
     @State var email = "etienne@vautherin.com"

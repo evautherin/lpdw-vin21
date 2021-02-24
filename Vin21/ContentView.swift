@@ -9,7 +9,7 @@ import SwiftUI
 import Firebase
 
 struct ContentView: View {
-    @ObservedObject var model: Model
+    @EnvironmentObject var model: Model
     
     // Etat définissant l'affichage de la vue de login
     @State var isShowingLogin: Bool
@@ -30,7 +30,7 @@ struct ContentView: View {
             }.padding()
             
             List(model.wines) { wine in
-                WineView(model: model, wine: wine)
+                WineView(wine: wine)
             }
 
             Button("Sign Out") {
@@ -56,7 +56,7 @@ struct ContentView: View {
         
         // La vue LoginView est affichée par dessus VStack lorsque isShowingLogin est vrai
         .sheet(isPresented: $isShowingLogin) {
-            LoginView(model: model)
+            LoginView()
         }
         
     }
@@ -65,6 +65,6 @@ struct ContentView: View {
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         let model = Model()
-        return ContentView(model: model, isShowingLogin: model.noSignedUser)
+        return ContentView(isShowingLogin: model.noSignedUser)
     }
 }

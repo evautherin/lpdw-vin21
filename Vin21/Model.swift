@@ -20,7 +20,7 @@ class Model: ObservableObject {
     var subscriptions = Set<AnyCancellable>()
     
     
-    func listenFirebase() {
+    init() {
         Auth.auth().userPublisher
             .assign(to: &$user)
 //            .assign(to: \.user, on: self)

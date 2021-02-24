@@ -10,7 +10,7 @@ import SwiftUI
 
 
 struct WineView: View {
-    let model: Model
+    @EnvironmentObject var model: Model
     let wine: Wine
     
     var body: some View {

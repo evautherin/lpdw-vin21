@@ -14,8 +14,7 @@ struct Vin21App: App {
 
     var body: some Scene {
         WindowGroup {
-            let model = delegate.model
-            ContentView(model: model, isShowingLogin: false)
+            ContentView(isShowingLogin: false)
                 .environmentObject(Model())
         }
     }
@@ -23,14 +22,11 @@ struct Vin21App: App {
 
 
 class Delegate : NSObject, UIApplicationDelegate {
-    let model = Model()
-
     func application(
         _ application: UIApplication,
         didFinishLaunchingWithOptions _: [UIApplication.LaunchOptionsKey : Any]? = nil
     ) -> Bool {
         FirebaseApp.configure()
-        model.listenFirebase()
         return true
     }
 }
