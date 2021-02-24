@@ -20,8 +20,8 @@ struct LoginView: View {
     var body: some View {
         VStack {
             GroupBox {
-                TextField("Email", text: $email) .textFieldStyle(RoundedBorderTextFieldStyle())
-                SecureField("Password", text: $password)          .textFieldStyle(RoundedBorderTextFieldStyle())
+                TextField("Email", text: $email).textFieldStyle(RoundedBorderTextFieldStyle())
+                SecureField("Password", text: $password).textFieldStyle(RoundedBorderTextFieldStyle())
             }
 
             // Le bouton Login essaie de se connecter à Firebase avec le contenu des variables email et password lorsqu'il est pressé
