@@ -28,7 +28,7 @@ extension Auth {
 
 
 extension CollectionReference {
-    func items<T: Decodable>(ofType type: T.Type) -> AnyPublisher<[T], Error> {
+    func items<T: Decodable>(ofType: T.Type) -> AnyPublisher<[T], Error> {
         
         let itemsSubject = PassthroughSubject<[T], Error>()
         
@@ -40,12 +40,12 @@ extension CollectionReference {
             
             if let querySnapshot = querySnapshot {
                 let documents = querySnapshot.documents
-                let items = documents.compactMap { queryDocumentSnapshot -> T? in
+                let items = documents.compactMap { (queryDocumentSnapshot) -> T? in
                     try? queryDocumentSnapshot.data(as: T.self)
                 }
                 itemsSubject.send(items)
             }
-          }
+        }
         
         return itemsSubject
             .handleEvents(receiveCancel: { registration.remove() })

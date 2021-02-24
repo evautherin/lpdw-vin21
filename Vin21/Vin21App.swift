@@ -16,6 +16,7 @@ struct Vin21App: App {
         WindowGroup {
             let model = delegate.model
             ContentView(model: model, isShowingLogin: false)
+                .environmentObject(Model())
         }
     }
 }

@@ -22,14 +22,16 @@ class Model: ObservableObject {
     
     func listenFirebase() {
         Auth.auth().userPublisher
-            .assign(to: \.user, on: self)
-            .store(in: &subscriptions)
+            .assign(to: &$user)
+//            .assign(to: \.user, on: self)
+//            .store(in: &subscriptions)
 
         $user
             .compactMap { $0 }
             .map { Firestore.firestore().collection($0.uid) }
-            .assign(to: \.collection, on: self)
-            .store(in: &subscriptions)
+            .assign(to: &$collection)
+//            .assign(to: \.collection, on: self)
+//            .store(in: &subscriptions)
 
         $collection
             .compactMap { $0 }
@@ -37,8 +39,9 @@ class Model: ObservableObject {
             .switchToLatest()
             .handleEvents(receiveCompletion: handleCompletionError)
             .replaceError(with: [])
-            .assign(to: \.wines, on: self)
-            .store(in: &subscriptions)
+            .assign(to: &$wines)
+//            .assign(to: \.wines, on: self)
+//            .store(in: &subscriptions)
     }
     
     
